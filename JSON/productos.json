@@ -1,0 +1,148 @@
+[
+  {
+    "id": 1,
+    "categoria": "accesorios",
+    "nombre": "Piluso Nike Unisex Negro",
+    "desc": "Diseño clásico y urbano con logo bordado. Protege del sol con estilo y comodidad.",
+    "precio": 9990,
+    "imagen": "../Assets/productos/accesorio1.avif"
+  },
+  {
+    "id": 2,
+    "categoria": "accesorios",
+    "nombre": "Medias Largas Nike (Pack x3)",
+    "desc": "Pack de tres pares con ajuste perfecto. Ideales para entrenamientos y uso diario.",
+    "precio": 10500,
+    "imagen": "../Assets/productos/accesorio2.avif"
+  },
+  {
+    "id": 3,
+    "categoria": "accesorios",
+    "nombre": "Canilleras Nike Mercurial Lite",
+    "desc": "Protección liviana y anatómica para tus partidos. Incluyen fundas de compresión.",
+    "precio": 700,
+    "imagen": "../Assets/productos/accesorio3.avif"
+  },
+  {
+    "id": 4,
+    "categoria": "accesorios",
+    "nombre": "Gorra Nike Pro Blanca",
+    "desc": "Con paneles microperforados para una ventilación óptima. Perfecta para entrenar al aire libre.",
+    "precio": 5896,
+    "imagen": "../Assets/productos/accesorio4.avif"
+  },
+  {
+    "id": 5,
+    "categoria": "accesorios",
+    "nombre": "Pelota Nike Pitch Training",
+    "desc": "Pelota de entrenamiento duradera y precisa. Ideal para mejorar tu juego.",
+    "precio": 36220,
+    "imagen": "../Assets/productos/accesorio5.avif"
+  },
+  {
+    "id": 6,
+    "categoria": "accesorios",
+    "nombre": "Cinturón de Entrenamiento Nike",
+    "desc": "Soporte lumbar ajustable para entrenamientos de fuerza. Entrená con seguridad y confort.",
+    "precio": 89,
+    "imagen": "../Assets/productos/accesorio6.avif"
+  },
+  {
+    "id": 7,
+    "categoria": "hombre",
+    "nombre": "Camiseta Nike Francia Blanca",
+    "desc": "Modelo oficial de la selección francesa. Ideal para hinchas y coleccionistas del fútbol.",
+    "precio": 9990,
+    "imagen": "../Assets/productos/hombre1.avif"
+  },
+  {
+    "id": 8,
+    "categoria": "hombre",
+    "nombre": "Remera Nike Negra Dry-FIT",
+    "desc": "Diseño clásico y liviano con tecnología Dry-FIT. Perfecta para entrenamientos o uso diario.",
+    "precio": 3692,
+    "imagen": "../Assets/productos/hombre2.avif"
+  },
+  {
+    "id": 9,
+    "categoria": "hombre",
+    "nombre": "Musculosa Nike Pro Negra",
+    "desc": "Musculosa de alto rendimiento, diseñada para potenciar tus entrenamientos más exigentes.",
+    "precio": 33379,
+    "imagen": "../Assets/productos/hombre3.avif"
+  },
+  {
+    "id": 10,
+    "categoria": "hombre",
+    "nombre": "Buzo Nike Sportswear Azul",
+    "desc": "Abrigo con capucha y cierre frontal. Estilo moderno para mantener el calor sin perder comodidad.",
+    "precio": 5874,
+    "imagen": "../Assets/productos/hombre4.avif"
+  },
+  {
+    "id": 11,
+    "categoria": "hombre",
+    "nombre": "Pantalón Cargo Nike Negro",
+    "desc": "Pantalón casual con bolsillos funcionales. Comodidad urbana con estilo versátil.",
+    "precio": 666,
+    "imagen": "../Assets/productos/hombre5.avif"
+  },
+  {
+    "id": 12,
+    "categoria": "hombre",
+    "nombre": "Short Nike Court Blanco",
+    "desc": "Short deportivo ideal para entrenamientos o juegos de tenis. Ligero y cómodo.",
+    "precio": 1235,
+    "imagen": "../Assets/productos/hombre6.avif"
+  },
+  {
+    "id": 13,
+    "categoria": "mujer",
+    "nombre": "Camiseta Nike Strike Negra",
+    "desc": "Diseño deportivo con estilo urbano. Ideal para entrenamientos o un look casual y cómodo.",
+    "precio": 9990,
+    "imagen": "../Assets/productos/mujer1.avif"
+  },
+  {
+    "id": 14,
+    "categoria": "mujer",
+    "nombre": "Campera Nike Oversize Celeste",
+    "desc": "Campera liviana de corte amplio. Comodidad total para tus actividades o salidas informales.",
+    "precio": 5963,
+    "imagen": "../Assets/productos/mujer2.avif"
+  },
+  {
+    "id": 15,
+    "categoria": "mujer",
+    "nombre": "Camiseta Nike Francia Oficial",
+    "desc": "Camiseta oficial de la selección francesa. Calidad premium para hinchas y atletas.",
+    "precio": 7410,
+    "imagen": "../Assets/productos/mujer3.avif"
+  },
+  {
+    "id": 16,
+    "categoria": "mujer",
+    "nombre": "Camiseta Nike Noruega Oficial",
+    "desc": "Representá a tu selección con esta camiseta roja de edición oficial. Cómoda y elegante.",
+    "precio": 9963,
+    "imagen": "../Assets/productos/mujer4.avif"
+  },
+  {
+    "id": 17,
+    "categoria": "mujer",
+    "nombre": "Short Deportivo Nike Negro",
+    "desc": "Short de alto rendimiento con ajuste perfecto. Ideal para entrenamientos de alta intensidad.",
+    "precio": 8887,
+    "imagen": "../Assets/productos/mujer5.avif"
+  },
+  {
+    "id": 18,
+    "categoria": "mujer",
+    "nombre": "Musculosa Nike Dri-FIT Blanca",
+    "desc": "Tecnología Dri-FIT para mantenerte fresca y seca. Prenda esencial para entrenar o el día a día.",
+    "precio": 454,
+    "imagen": "../Assets/productos/mujer6.avif"
+  }
+]
+
+
