@@ -9,7 +9,8 @@
       { "id": 8, "cantidad": 2, "precio_unitario": 3692 },
       { "id": 3, "cantidad": 1, "precio_unitario": 700 }
     ],
-    "total": 18074
+    "total": 18074,
+    "disponible_envio": true
   },
   {
     "id": 2,
@@ -22,7 +23,8 @@
       { "id": 14, "cantidad": 1, "precio_unitario": 5963 },
       { "id": 2, "cantidad": 1, "precio_unitario": 10500 }
     ],
-    "total": 62673
+    "total": 62673,
+    "disponible_envio": false
   },
   {
     "id": 3,
@@ -35,7 +37,8 @@
       { "id": 12, "cantidad": 3, "precio_unitario": 1235 },
       { "id": 4, "cantidad": 1, "precio_unitario": 5896 }
     ],
-    "total": 21283
+    "total": 21283,
+    "disponible_envio": true
   },
   {
     "id": 4,
@@ -48,7 +51,8 @@
       { "id": 6, "cantidad": 1, "precio_unitario": 89 },
       { "id": 1, "cantidad": 1, "precio_unitario": 9990 }
     ],
-    "total": 52345
+    "total": 52345,
+    "disponible_envio": true
   },
   {
     "id": 5,
@@ -61,7 +65,9 @@
       { "id": 16, "cantidad": 1, "precio_unitario": 9963 },
       { "id": 3, "cantidad": 2, "precio_unitario": 700 }
     ],
-    "total": 20445
+    "total": 20445,
+    "disponible_envio": false
   }
 ]
+
 
