@@ -1,0 +1,20 @@
+{
+  "name": "ies_aw2_latesport",
+  "version": "1.0.0",
+  "description": "Repositorio de la asignatura AW2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgusGiletta/IES_AW2_LATESport.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AgusGiletta/IES_AW2_LATESport/issues"
+  },
+  "homepage": "https://github.com/AgusGiletta/IES_AW2_LATESport#readme"
+}
