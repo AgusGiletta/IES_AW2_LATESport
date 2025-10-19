@@ -39,6 +39,3 @@ window.addEventListener('load', () => {
     });
   }
 });
-
-
-

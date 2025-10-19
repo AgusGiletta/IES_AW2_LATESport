@@ -46,6 +46,45 @@
     "email": "sofia.lopez@example.com",
     "contraseña": "sofia!2025",
     "usuario": "sofial"
+  },
+  {
+    "id": 7,
+    "nombre": "Pedro",
+    "apellido": "Ramírez",
+    "email": "pedro.ramirez@example.com",
+    "usuario": "pedror",
+    "contraseña": "abcd1234"
+  },
+  {
+    "id": 8,
+    "nombre": "Omar",
+    "apellido": "Peralta",
+    "email": "omar@example.com",
+    "usuario": "omarp",
+    "contraseña": "12547"
+  },
+  {
+    "id": 9,
+    "nombre": "Tomas",
+    "apellido": "Gomez",
+    "email": "tomasg@example.com",
+    "usuario": "tomasg",
+    "contraseña": "12547"
+  },
+  {
+    "id": 10,
+    "nombre": "Tomas",
+    "apellido": "Luna",
+    "email": "tomasl@example.com",
+    "usuario": "tomal",
+    "contraseña": "12547"
+  },
+  {
+    "id": 11,
+    "nombre": "Jose",
+    "apellido": "Bustamante",
+    "email": "joseb@example.com",
+    "usuario": "joseb",
+    "contraseña": "12547"
   }
 ]
-

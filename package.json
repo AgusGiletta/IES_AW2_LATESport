@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.backend.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/AgusGiletta/IES_AW2_LATESport/issues"
   },
-  "homepage": "https://github.com/AgusGiletta/IES_AW2_LATESport#readme"
+  "homepage": "https://github.com/AgusGiletta/IES_AW2_LATESport#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }

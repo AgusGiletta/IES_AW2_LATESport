@@ -4,7 +4,7 @@
     "categoria": "accesorios",
     "nombre": "Piluso Nike Unisex Negro",
     "desc": "Diseño clásico y urbano con logo bordado. Protege del sol con estilo y comodidad.",
-    "precio": 9990,
+    "precio": 2000,
     "imagen": "../Assets/productos/accesorio1.avif",
     "activo": true
   },
@@ -22,7 +22,7 @@
     "categoria": "accesorios",
     "nombre": "Canilleras Nike Mercurial Lite",
     "desc": "Protección liviana y anatómica para tus partidos. Incluyen fundas de compresión.",
-    "precio": 700,
+    "precio": 1500,
     "imagen": "../Assets/productos/accesorio3.avif",
     "activo": true
   },
@@ -76,7 +76,7 @@
     "categoria": "hombre",
     "nombre": "Musculosa Nike Pro Negra",
     "desc": "Musculosa de alto rendimiento, diseñada para potenciar tus entrenamientos más exigentes.",
-    "precio": 33379,
+    "precio": 4000,
     "imagen": "../Assets/productos/hombre3.avif",
     "activo": true
   },
@@ -85,7 +85,7 @@
     "categoria": "hombre",
     "nombre": "Buzo Nike Sportswear Azul",
     "desc": "Abrigo con capucha y cierre frontal. Estilo moderno para mantener el calor sin perder comodidad.",
-    "precio": 5874,
+    "precio": 5000,
     "imagen": "../Assets/productos/hombre4.avif",
     "activo": true
   },
@@ -94,7 +94,7 @@
     "categoria": "hombre",
     "nombre": "Pantalón Cargo Nike Negro",
     "desc": "Pantalón casual con bolsillos funcionales. Comodidad urbana con estilo versátil.",
-    "precio": 666,
+    "precio": 6000,
     "imagen": "../Assets/productos/hombre5.avif",
     "activo": true
   },
@@ -162,6 +162,3 @@
     "activo": false
   }
 ]
-
-
-
