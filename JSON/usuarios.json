@@ -86,5 +86,13 @@
     "email": "joseb@example.com",
     "usuario": "joseb",
     "contraseña": "12547"
+  },
+  {
+    "id": 12,
+    "nombre": "Romina",
+    "apellido": "Limbo",
+    "email": "romil@example.com",
+    "usuario": "rominal",
+    "contraseña": "12547"
   }
 ]

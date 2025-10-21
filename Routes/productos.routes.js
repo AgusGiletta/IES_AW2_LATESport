@@ -89,7 +89,7 @@ router.delete("/eliminar/:id", async (req, res) => {
     }
 
     productosData.splice(index, 1);
-    await writeFile("./JSON/productos.JSON", JSON.stringify(productosData, null, 2));
+    await writeFile("./JSON/productos.json", JSON.stringify(productosData, null, 2));
 
     res.status(200).json({ mensaje: `Producto con ID ${id} eliminado correctamente` });
 });
