@@ -6,8 +6,8 @@ import { get } from "http"
 
 const router = Router()
 
-/* RUTAS DE VENTAS */
-const fileVentas = await readFile ('./JSON/ventas.JSON', 'utf-8')
+// RUTAS DE VENTAS 
+const fileVentas = await readFile ('./JSON/ventas.json', 'utf-8')
 const ventasData = JSON.parse(fileVentas)
 
 router.get('/all', (req, res) => {
