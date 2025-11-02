@@ -1,24 +1,30 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import usuariosRouter from './Routes/usuarios.routes.js';
 import productosRouter from './Routes/productos.routes.js';
 import ventasRouter from './Routes/ventas.routes.js';
 
-const app = express()
-const port = 3001
+const app = express();
+const port = 3001;
 
-app.use (express.json()); //uso de express.json()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.listen(port, () => {
-    console.log(`Servidor levantado en el puerto:${port}`)
-})
+app.use(express.json());
 
-// rutas API
+// Rutas API (van primero para que las peticiones a /usuarios/nuevo no fallen)
 app.use('/usuarios', usuariosRouter);
 app.use('/productos', productosRouter);
 app.use('/ventas', ventasRouter);
 
-// servir archivos estáticos
-app.use(express.static('HTML'));
-app.use('/JS', express.static('JS'));
-app.use('/CSS', express.static('CSS'));
-app.use('/Assets', express.static('Assets'));
+// Esto da acceso a carpetas como /JS, /CSS, /Assets, /Utils, etc., usando rutas relativas.
+app.use(express.static(__dirname));
+
+// Esto permite acceder a mis páginas como: http://localhost:3001/registro.html
+app.use(express.static(path.join(__dirname, 'HTML')));
+
+// Iniciar servidor
+app.listen(port, () => {
+    console.log(`Servidor levantado en http://localhost:${port}`);
+});

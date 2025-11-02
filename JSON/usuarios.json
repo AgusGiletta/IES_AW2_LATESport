@@ -94,5 +94,61 @@
     "email": "romil@example.com",
     "usuario": "rominal",
     "contraseña": "12547"
+  },
+  {
+    "id": 13,
+    "nombre": "Agustina",
+    "apellido": "Grezzana",
+    "email": "agusgrezz@ejemplo.com.ar",
+    "usuario": "agusgrezz",
+    "contraseña": "123456"
+  },
+  {
+    "id": 14,
+    "nombre": "Cecilia",
+    "apellido": "Martinez",
+    "email": "cecimartinez@ejemplo.com",
+    "usuario": "cecimartin4z",
+    "contraseña": "123456"
+  },
+  {
+    "id": 15,
+    "nombre": "Marina",
+    "apellido": "Paz",
+    "email": "marinapaz@ejemplo.com",
+    "usuario": "marinapaz",
+    "contraseña": "123456"
+  },
+  {
+    "id": 16,
+    "nombre": "Giani",
+    "apellido": "Grezzana",
+    "email": "gianigrazzana@ejemplo.com",
+    "usuario": "gianigrezz",
+    "contraseña": "123456"
+  },
+  {
+    "id": 17,
+    "nombre": "Lorena",
+    "apellido": "Heinz",
+    "email": "lorenahe@ejemplo.com.ar",
+    "usuario": "lorenahe",
+    "contraseña": "123456"
+  },
+  {
+    "id": 18,
+    "nombre": "Rita",
+    "apellido": "Re",
+    "email": "ritare@ejemplo.com.ar",
+    "usuario": "ritare",
+    "contraseña": "123456"
+  },
+  {
+    "id": 19,
+    "nombre": "Marcelo",
+    "apellido": "Beltram",
+    "email": "marcebeltram@ejemplo.com",
+    "usuario": "marcebeltram",
+    "contraseña": "456789"
   }
 ]

@@ -126,7 +126,6 @@ label.form-label {
   margin-bottom: 0.5rem;
 }
 
-/* NUEVO: botón eliminar producto completo */
 .btn-remove-full {
   background-color: #dc3545;
   color: white;
@@ -142,4 +141,19 @@ label.form-label {
 
 .btn-remove-full:hover {
   background-color: #bb2d3b;
+}
+
+.centered-title {
+    margin-top: 2rem; 
+    margin-bottom: 2rem; 
+}
+
+/* Estilos para que la barra lateral de filtros se quede fija en desktop */
+@media (min-width: 992px) {
+    .filter-sidebar {
+        position: sticky;
+        top: 80px; 
+        height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
 }

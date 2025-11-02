@@ -1,4 +1,4 @@
-import { actualizarContadorCarrito } from "../../utils.js";
+import { actualizarContadorCarrito, obtenerClaveCarrito } from "../../utils.js";
 
 export function renderCards(products, containerId) {
   const container = document.getElementById(containerId);
@@ -6,7 +6,11 @@ export function renderCards(products, containerId) {
 
   products.forEach(product => {
     const cardHTML = `
-      <div class="col">
+      <div class="col"
+          data-tipo="${product.tipo || ''}"
+          data-talla="${product.talla || ''}"
+          data-color="${product.color || ''}"
+      >
         <div class="card h-100 shadow-sm">
           <img src="${product.imagen}" class="card-img-top img-producto" alt="${product.nombre}">
           <div class="card-body text-center d-flex flex-column">
@@ -31,10 +35,18 @@ export function renderCards(products, containerId) {
   });
 }
 
-export function attachCardEvents() {
-  const cards = document.querySelectorAll('.card');
+export function attachCardEvents(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`ERROR: attachCardEvents no encontró el contenedor con ID: ${containerId}`);
+        return; 
+    }
 
-  cards.forEach(card => {
+    const cards = container.querySelectorAll('.card');
+    
+    if (cards.length === 0) return; 
+
+    cards.forEach(card => {
     const decreaseBtn = card.querySelector('.btn-decrease');
     const increaseBtn = card.querySelector('.btn-increase');
     const quantitySpan = card.querySelector('.quantity');
@@ -60,59 +72,55 @@ export function attachCardEvents() {
     const addToCartBtn = card.querySelector('.btn-add-to-cart');
 
     addToCartBtn.addEventListener('click', () => {
-      const userData = sessionStorage.getItem('userData');
-      if (!userData) {
-        alert('Debes iniciar sesión para agregar productos al carrito.');
-        window.location.href = 'iniciar_sesion.html';
-        return;
-      }
+            const userData = sessionStorage.getItem('user');
+            if (!userData) {
+                alert('Debes iniciar sesión para agregar productos al carrito.');
+                window.location.href = 'iniciar_sesion.html';
+                return;
+            }
+            
+            const cartKey = obtenerClaveCarrito(); 
+            if (!cartKey) { return; } 
 
-      const title = card.querySelector('.card-title').textContent;
-      const description = card.querySelector('.card-text').textContent;
-      const image = card.querySelector('.card-img-top').getAttribute('src');
-      const quantitySelected = parseInt(quantitySpan.textContent);
-      const price = priceUnitario;
+            const title = card.querySelector('.card-title').textContent;
+            const description = card.querySelector('.card-text').textContent;
+            const image = card.querySelector('.card-img-top').getAttribute('src');
+            const quantitySelected = parseInt(card.querySelector('.quantity').textContent); 
+            const price = parseFloat(card.querySelector('.precio-unitario').textContent);
 
-      if (quantitySelected === 0) {
-        alert('Debes seleccionar al menos un producto.');
-        return;
-      }
+            if (quantitySelected === 0) {
+                alert('Debes seleccionar al menos un producto.');
+                return;
+            }
 
-      const product = {
-        title,
-        description,
-        image,
-        price,
-        quantity: quantitySelected,
-        total: price * quantitySelected
-      };
+            const product = {
+                title,
+                description,
+                image,
+                price,
+                quantity: quantitySelected,
+                total: price * quantitySelected
+            };
 
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-      const existing = cart.find(p => p.title === title);
-      if (existing) {
-        existing.quantity += quantitySelected;
-        existing.total = existing.price * existing.quantity;
-      } else {
-        cart.push(product);
-      }
+            const existing = cart.find(p => p.title === title);
+            if (existing) {
+                existing.quantity += quantitySelected;
+                existing.total = existing.price * existing.quantity;
+            } else {
+                cart.push(product);
+            }
 
-      localStorage.setItem('cart', JSON.stringify(cart));
-      actualizarContadorCarrito();
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            actualizarContadorCarrito();
 
-      alert('Producto agregado al carrito.');
+            alert('Producto agregado al carrito.');
 
-      quantity = 0;
-      quantitySpan.textContent = '0';
-      totalSpan.textContent = '0.00';
+            card.querySelector('.quantity').textContent = '0';
+            card.querySelector('.precio-total').textContent = '0.00';
     });
   });
 }
-
-
-
-
-
-
 
 

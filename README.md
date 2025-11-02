@@ -21,10 +21,10 @@ Cada módulo cuenta con sus propias rutas (`/usuarios`, `/productos`, `/ventas`)
   **Ejemplo:** `/usuarios/byID/1`
 
 - **POST /usuarios/login**  
-  Valida credenciales de acceso (`usuarioNombre`, `pass`).  
+  Valida credenciales de acceso (`email`, `pass`).  
   **Body JSON:**
   ```json
-  { "usuarioNombre": "juanp", "pass": "123456" }
+  { "email": "juanp", "pass": "123456" }
   ```
 
 - **POST /usuarios/nuevo**  
@@ -33,10 +33,10 @@ Cada módulo cuenta con sus propias rutas (`/usuarios`, `/productos`, `/ventas`)
   ```json
   {
     "nombre": "Emma",
-    "apellido": "Perez",
-    "usuario": "emmap",
+    "apellido": "Re",
+    "usuario": "emmare",
     "contraseña": "abc123",
-    "email": "emmap@example.com"
+    "email": "emmare@example.com"
   }
   ```
 
@@ -56,10 +56,10 @@ Cada módulo cuenta con sus propias rutas (`/usuarios`, `/productos`, `/ventas`)
 
 - **GET /byNombre/:nombre**  
   Devuelve un producto según su nombre.  
-  **Ejemplo:** `/productos/byNombre/Piluso Nike Unisex Negro`
+  **Ejemplo:** `/productos/byNombre/Campera Nike Oversize`
 
-- **PUT /byCategoria/:categoria**  
-  Devuelve todos los productos de una categoría específica.  
+- **GET /byCategoria/:categoria**  
+  Devuelve todos los productos activos de una categoría específica.  
   **Ejemplo:** `/productos/byCategoria/hombre`
 
 - **PUT /cambiarPrecio**  
