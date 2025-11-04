@@ -40,7 +40,7 @@ export function obtenerClaveCarrito() {
         return null;
     }
     const user = JSON.parse(userSession);
-    return `carrito-user-${user.id}`;
+    return `carrito-user-${user.id || user._id}`; 
 }
 
 export function actualizarContadorCarrito() {
@@ -63,13 +63,16 @@ export function setupLogoutButton() {
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
 
-            const cartKey = obtenerClaveCarrito();
+            const cartKey = obtenerClaveCarrito(); 
 
             sessionStorage.removeItem('user');
+            sessionStorage.removeItem('token'); 
 
             if (cartKey) {
                 localStorage.removeItem(cartKey);
             }
+            
+            actualizarContadorCarrito();
 
             window.location.href = 'inicio.html';
         });

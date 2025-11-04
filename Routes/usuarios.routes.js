@@ -1,104 +1,122 @@
 import { Router } from "express";
-import { readFile, writeFile } from "fs/promises";
-import { get_user_byID, getUsuariosData } from "../Utils/usuarios.utils.js"; 
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { crearUsuario, encontrarUsuarioParaLogin, encontrarUsuarioPorID,eliminarUsuarioPorID } from "../db/actions/usuarios.action.js"; 
+import { eliminarVentasPorUsuarioID } from '../db/actions/ventas.actions.js';
 
 const router = Router();
-const JSON_PATH = "./JSON/usuarios.json";
-
+// esto usabaprimero const SECRET = "ctAYOYnzAZR11UiQrW6npjO1abdi_MhLKtsuR-fI77_BphZwmMlHJJYHnwpW4fzQ" 
+const JWT_SECRET = process.env.JWT_SECRET; // nueva para dejar el jwt en .env
 
 router.post("/login", async (req, res) => {
     const { email, pass } = req.body;
-    const usuariosData = await getUsuariosData(); 
+    
+    if (!email || !pass) {
+        return res.status(400).json({ error: "Faltan email o contraseña." });
+    }
 
-    const result = usuariosData.find(
-        (e) => e.email === email && e.contraseña === pass
-    );
+    try {
+        const userWithPass = await encontrarUsuarioParaLogin(email); 
+        const isAuthenticated = userWithPass && bcrypt.compareSync(pass, userWithPass.contraseña);
 
-    if (result) {
-        const { contraseña, ...usuarioSinPass } = result;
-        res.status(200).json({
-            mensaje: `Bienvenido/a ${result.nombre}!`,
-            usuario: usuarioSinPass
-        });
-    } else {
-        res.status(400).json({ error: "Email o contraseña incorrectos" });
+        if (!isAuthenticated) {
+            return res.status(400).json({ error: "Email o contraseña incorrectos" });
+        }
+        
+        const { contraseña, ...payload } = userWithPass.toObject();
+        // esta se usaba primero const token = jwt.sign(payload, SECRET, { expiresIn: 86400 }); 
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 86400 }); 
+
+        
+        res.status(200).json({ token });
+        
+    } catch (error) {
+        console.error("Error en POST /login:", error);
+        res.status(500).json({ error: "Error interno del servidor durante el login." });
     }
 });
 
-router.get("/byID/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
-    const result = await get_user_byID(id); 
 
-    if (result) {
-        const { contraseña, ...usuarioSinPass } = result;
-        res.status(200).json(usuarioSinPass);
-    } else {
-        res
-            .status(400)
-            .json({ error: `No se encontró el usuario con ID ${id}` });
+router.get("/byID/:id", async (req, res) => {
+    const id = req.params.id; 
+    
+    try {
+        const result = await encontrarUsuarioPorID(id); 
+
+        if (result) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ error: `No se encontró el usuario con ID ${id}` });
+        }
+    } catch (error) {
+        console.error("Error en GET /byID:", error);
+        
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+             return res.status(400).json({ error: `El ID proporcionado (${id}) no tiene un formato válido.` });
+        }
+        
+        res.status(500).json({ error: "Error interno del servidor al buscar el usuario." });
+    }
+});
+
+router.post('/nuevo', async (req, res) => { 
+    try {
+        const { nombre, apellido, usuario, pass, email } = req.body; 
+
+        if (!nombre || !apellido || !usuario || !pass || !email) {
+            return res.status(400).json({ error: "Faltan datos obligatorios (nombre, apellido, usuario, pass, email)." });
+        }
+
+        const nuevoUsuario = await crearUsuario({ nombre, apellido, usuario, pass, email });
+
+        res.status(201).json({ 
+            mensaje: "Usuario creado correctamente", 
+            usuario: nuevoUsuario 
+        });
+        
+    } catch (error) {
+        console.error("Error al crear usuario:", error.message);
+        
+        if (error.message.includes("El email o el nombre de usuario ya está registrado.")) {
+            return res.status(409).json({ error: error.message });
+        }
+
+        res.status(500).json({ error: "Error interno al crear el usuario. Por favor, intente de nuevo.", detalle: error.message });
     }
 });
 
 router.delete("/eliminar/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     
-    let usuariosData = await getUsuariosData();
-
     try {
-        const fileVentas = await readFile("./JSON/ventas.json", "utf-8");
-        const ventasData = JSON.parse(fileVentas);
+        const resultadoVentas = await eliminarVentasPorUsuarioID(id);
+        console.log(resultadoVentas.message); 
 
-        const tieneVentas = ventasData.some(v => v.id_usuario === id);
-        if (tieneVentas) {
-            return res.status(400).json({
-                error: "No se puede eliminar este usuario. Tiene ventas asociadas."
-            });
+        const usuarioEliminado = await eliminarUsuarioPorID(id);
+
+        if (!usuarioEliminado) {
+            return res.status(404).json({ error: `No se encontró el usuario con ID ${id} para eliminar.` });
         }
+
+        res.status(200).json({ 
+            mensaje: `Usuario con ID ${id} eliminado exitosamente. (${resultadoVentas.deletedCount} ventas asociadas eliminadas)`, 
+            usuario: usuarioEliminado 
+        });
+
     } catch (error) {
-         console.warn("Advertencia: No se pudo leer el archivo de ventas. Asumiendo que no hay ventas asociadas.");
-    }
+        console.error(`Error en DELETE /eliminar/:id (Flujo de Integridad):`, error.message);
     
-    
-    const index = usuariosData.findIndex(u => u.id === id);
-    if (index === -1) {
-        return res.status(404).json({ error: "Usuario no encontrado" });
+        if (error.message.includes('Error de Integridad')) {
+            return res.status(409).json({ error: error.message });
+        }
+
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(400).json({ error: `El ID proporcionado (${id}) no tiene un formato válido.` });
+        }
+
+        res.status(500).json({ error: error.message || "Error interno del servidor al eliminar el usuario." });
     }
-
-    usuariosData.splice(index, 1);
-    await writeFile(JSON_PATH, JSON.stringify(usuariosData, null, 2));
-
-    res.status(200).json({ mensaje: `Usuario con ID ${id} eliminado correctamente` });
 });
 
-router.post("/nuevo", async (req, res) => {
-    try {
-        const { nombre, apellido, usuario, contraseña, email } = req.body;
-
-        let usuariosData = await getUsuariosData(); 
-
-        if (!nombre || !apellido || !usuario || !contraseña || !email) {
-            return res.status(400).json({ error: "Faltan datos obligatorios" });
-        }
-
-        const existe = usuariosData.some(u => u.usuario === usuario || u.email === email);
-        if (existe) {
-            return res.status(400).json({ error: "El usuario o email ya existe" });
-        }
-
-        const nuevoId = usuariosData.length ? Math.max(...usuariosData.map(u => u.id)) + 1 : 1;
-
-        const nuevoUsuario = { id: nuevoId, nombre, apellido, email, usuario, contraseña };
-        usuariosData.push(nuevoUsuario);
-
-        await writeFile(JSON_PATH, JSON.stringify(usuariosData, null, 2));
-
-        const { contraseña: _, ...usuarioResponse } = nuevoUsuario;
-
-        res.status(201).json({ mensaje: "Usuario creado correctamente", usuario: usuarioResponse });
-    } catch (error) {
-        console.error("Error al crear usuario:", error);
-        res.status(500).json({ error: "Error interno al crear el usuario. Por favor, intente de nuevo." });
-    }
-});
 
 export default router;

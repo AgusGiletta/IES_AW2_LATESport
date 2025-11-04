@@ -1,93 +1,85 @@
 import { Router } from "express"
-import { readFile, writeFile } from 'fs/promises'
-
-const PRODUCTOS_FILE_PATH = './JSON/productos.json';
-const VENTAS_FILE_PATH = './JSON/ventas.json';
+import { crearProductos, encontrarTodosLosProductos, encontrarTodosLosProductosporID, encontrarTodosLosProductosporCategoria, encontrarProductoPorNombre, modificarPrecio, eliminarById } from "../db/actions/productos.action.js";
 
 const router = Router()
 
-const getProductosData = async () => {
-    try {
-        const file = await readFile(PRODUCTOS_FILE_PATH, 'utf-8');
-        return JSON.parse(file);
-    } catch (error) {
-        console.error("Error al leer productos.json:", error);
-        return [];
-    }
-}
 router.get('/byId/:id', async (req, res) => {
-    const productosData = await getProductosData(); 
+    const id = req.params.id;
     
-    const id = parseInt(req.params.id);
-    const result = productosData.find(e => e.id === id);
+    try {
+        const result = await encontrarTodosLosProductosporID(id);
 
-    if (result) {
-        res.status(200).json(result);
-    } else {
-        res.status(404).json({ error: `El producto con ID ${id} no se encuentra en la base de datos` });
+        if (result) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ error: `El producto con ID ${id} no se encuentra en la base de datos` });
+        }
+    } catch (error) {
+        console.error("Error en GET /byId/:id:", error);
+        
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(400).json({ error: `El ID proporcionado (${id}) no tiene un formato válido.` });
+        }
+        
+        res.status(500).json({ error: "Error interno del servidor al buscar el producto." });
     }
 });
 
 router.get('/byNombre/:nombre', async (req, res) => {
-    const productosData = await getProductosData(); 
-    
     const nombre = req.params.nombre;
-    const result = productosData.find(e => e.nombre === nombre);
+    
+    try {
+        const result = await encontrarProductoPorNombre(nombre);
 
-    if (result) {
-        res.status(200).json(result);
-    } else {
-        res.status(404).json({ error: `El producto ${nombre} no se encuentra en la base de datos` });
+        if (result) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ error: `El producto ${nombre} no se encuentra en la base de datos` });
+        }
+    } catch (error) {
+        console.error("Error en GET /byNombre/:nombre:", error);
+        res.status(500).json({ error: "Error interno del servidor al buscar el producto por nombre." });
     }
 });
 
+
 router.get('/', async (req, res) => {
-    const productosData = await getProductosData(); 
-    
-    const productosActivos = productosData.filter(p => p.activo);
-    res.status(200).json(productosActivos);
+    try {
+        const productosActivos = await encontrarTodosLosProductos(); 
+        
+        res.status(200).json(productosActivos);
+    } catch (error) {
+        console.error("Error al obtener productos:", error);
+        res.status(500).json({ error: "Error interno del servidor al consultar la base de datos." });
+    }
 });
 
 router.get('/byCategoria/:categoria', async (req, res) => {
-    const productosData = await getProductosData(); 
-    
     const categoria = req.params.categoria;
     
-    const result = productosData.filter(e => 
-        e.categoria === categoria && e.activo === true
-    );
-
-    if (result.length > 0) {
-        res.status(200).json(result);
-    } else {
-        res.status(404).json({
-            error: `No se encontraron productos activos en la categoría '${categoria}'.`
-        });
+    try {
+        const result = await encontrarTodosLosProductosporCategoria(categoria);
+        
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({
+                error: `No se encontraron productos activos en la categoría '${categoria}'.`
+            });
+        }
+    } catch (error) {
+        console.error("Error en GET /byCategoria:", error);
+        res.status(500).json({ error: "Error interno del servidor al buscar productos por categoría." });
     }
 });
-router.put('/cambiarPrecio', async (req, res) => {
-    const productosData = await getProductosData(); 
-    
-    const id = parseInt(req.body.id);
-    const nuevoPrecio = req.body.nuevoPrecio;
 
-    if (!id || nuevoPrecio === undefined || isNaN(Number(nuevoPrecio)) || Number(nuevoPrecio) < 0) {
-        return res.status(400).json({ error: "Debe enviar 'id' y un 'nuevoPrecio' válido y positivo." });
-    }
+router.patch("/modificarPrecio/:id", async (req, res) => {
+    const id = req.params.id;
+        const {precio} = req.body;
 
     try {
-        const index = productosData.findIndex(e => e.id === id);
-        if (index === -1) {
-            return res.status(404).json({ error: `Producto con ID ${id} no encontrado` });
-        }
-
-        productosData[index].precio = Number(nuevoPrecio); 
-        await writeFile(PRODUCTOS_FILE_PATH, JSON.stringify(productosData, null, 2));
-
-        res.status(200).json({ 
-            mensaje: `Precio de producto ID ${id} actualizado correctamente a ${nuevoPrecio}`,
-            producto: productosData[index] 
-        });
+        const result = await modificarPrecio(id, precio);
+        res.status(200).json(result);
     } catch (error) {
         console.error("Error al actualizar precio:", error);
         res.status(500).json({ error: "Error interno al actualizar el precio" });
@@ -95,36 +87,34 @@ router.put('/cambiarPrecio', async (req, res) => {
 });
 
 router.delete("/eliminar/:id", async (req, res) => {
-    const productosData = await getProductosData(); 
-    const ventasData = await getVentasData(); 
+    const id = req.params.id;
     
-    const id = parseInt(req.params.id);
-    const estaEnVenta = ventasData.some(v =>
-        v.productos.some(p => p.id === id) 
-    );
+    try {
+        const productoEliminado = await eliminarById(id);
 
-    if (estaEnVenta) {
-        return res.status(409).json({ 
-            error: "No se puede eliminar este producto. Está presente en ventas." 
+        res.status(200).json({ 
+            mensaje: `Producto con ID ${id} eliminado correctamente.`,
+            producto: productoEliminado 
         });
+        
+    } catch (error) {
+        console.error("Error en DELETE /eliminar/:id:", error.message);
+        
+        if (error.message.includes("no encontrado para eliminar")) {
+            return res.status(404).json({ error: error.message });
+        }
+        
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(400).json({ error: `El ID proporcionado (${id}) no tiene un formato válido.` });
+        }
+        res.status(500).json({ error: "Error interno del servidor al intentar eliminar el producto." });
     }
-
-    const index = productosData.findIndex(p => p.id === id);
-    if (index === -1) {
-        return res.status(404).json({ error: "Producto no encontrado" });
-    }
-
-    productosData.splice(index, 1);
-    await writeFile(PRODUCTOS_FILE_PATH, JSON.stringify(productosData, null, 2));
-
-    res.status(200).json({ mensaje: `Producto con ID ${id} eliminado correctamente` });
 });
 
 router.post("/nuevo", async (req, res) => {
     try {
-        const productosData = await getProductosData(); 
-        
-        const { nombre, categoria, desc, precio, imagen, activo } = req.body;
+
+        const { nombre, categoria, desc, tipo, talla, color, precio, imagen, activo } = req.body;
 
         if (!nombre || !categoria || !precio) {
             return res.status(400).json({ error: "Faltan datos obligatorios (nombre, categoria, precio)." });
@@ -134,26 +124,28 @@ router.post("/nuevo", async (req, res) => {
             return res.status(400).json({ error: "El precio debe ser un número positivo." });
         }
 
-        const nuevoId = productosData.length ? Math.max(...productosData.map(p => p.id)) + 1 : 1;
-
-        const nuevoProducto = {
-            id: nuevoId,
-            nombre,
-            categoria,
-            desc: desc || "",
-            precio: Number(precio), 
+        const nuevoProducto = await crearProductos({ 
+            nombre, 
+            categoria, 
+            desc, 
+            tipo,
+            talla,
+            color,
+            precio: Number(precio),
             imagen: imagen || "",
             activo: activo !== undefined ? Boolean(activo) : true 
-        };
+        });
 
-        productosData.push(nuevoProducto);
-
-        await writeFile(PRODUCTOS_FILE_PATH, JSON.stringify(productosData, null, 2));
 
         res.status(201).json({ mensaje: "Producto creado correctamente", producto: nuevoProducto });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al crear el producto" });
+        
+        if (error.code === 11000) {
+            return res.status(409).json({ error: "Error: Ya existe un producto con este nombre.", detalle: error.message });
+        }
+        
+        res.status(500).json({ error: "Error interno al crear el producto", detalle: error.message });
     }
 });
 

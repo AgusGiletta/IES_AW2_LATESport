@@ -150,5 +150,21 @@
     "email": "marcebeltram@ejemplo.com",
     "usuario": "marcebeltram",
     "contraseña": "456789"
+  },
+  {
+    "id": 20,
+    "nombre": "Roberto",
+    "apellido": "Ramirez",
+    "email": "roberto.ramirez@example.com",
+    "usuario": "robertor",
+    "contraseña": "$2b$08$8IIvrwyqomiutrDGL0I1Zut2EKtIBCfan4WH2aT56qHvre6CZPsum"
+  },
+  {
+    "id": 21,
+    "nombre": "Mirco",
+    "apellido": "Bastianello",
+    "email": "mircobast@ejemplo.com.ar",
+    "usuario": "mircobast",
+    "contraseña": "$2b$08$VCTJOFCjff45zhqqjlzY/Oh/CTbXUjB2M27qiwKBpxmX9lAEBFt6C"
   }
 ]

@@ -19,7 +19,7 @@ html, body {
 .card-body {
     display: flex;
     flex-direction: column;
-    align-items: stretch; 
+    align-items: stretch;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -148,7 +148,6 @@ label.form-label {
     margin-bottom: 2rem; 
 }
 
-/* Estilos para que la barra lateral de filtros se quede fija en desktop */
 @media (min-width: 992px) {
     .filter-sidebar {
         position: sticky;
